@@ -1,0 +1,160 @@
+let x = 130 + 15 - 10
+let y = 15
+
+// Level parts to generate
+cLevelBlocks = 112
+
+extract obj_props
+
+// 8x8 level parts
+let LEVEL00 = [
+	[
+		1, 0, 0, 0, 0, 0, 0, 0,
+		1, 0, 0, 0, 60,0, 0, 0,
+		9, 0, 0, 0, 0, 0, 0, 0,
+		9, 0,36, 0, 0, 0, 0, 0,
+		9, 0, 0, 0, 0, 60,0, 0,
+		9, 0, 0, 0, 0, 60,0, 0,
+		1, 0, 0, 0, 0, 0, 0, 0,
+		1, 0, 0, 60,0, 0, 0, 0 
+	],
+	[
+		1, 0, 0, 0, 0, 0, 0, 0,
+		1, 0, 0, 0, 60,0, 0, 0,
+		1, 0, 0, 0, 60,0, 0, 0,
+		1, 1, 0, 0, 0, 0, 0, 0,
+		1, 9, 0, 0, 0, 0, 0, 0,
+		1, 9,141,0, 0, 0, 0, 0,
+		1, 9, 0, 0, 0, 0, 0, 0,
+		1, 1, 1, 0, 0, 0, 60,0,
+	],
+	[
+		9, 0, 0, 0, 0, 0, 8, 1,
+		9, 0,143,0, 60,0, 8, 1,
+		9, 0, 0, 0, 0, 0, 8, 1,
+		9, 0, 0,36, 0, 0, 8, 1,
+		9, 0, 0, 0, 0, 0, 8, 1,
+		9, 0,143,0, 60,0, 8, 1,
+		9, 0, 0, 0, 0, 0, 8, 1,
+		9, 0, 0,36, 0, 0, 8, 1
+	],
+	[
+		1, 0, 0, 60,0, 0, 0,60,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+		1,143,0, 0, 60,0, 0, 0,
+		9, 0, 0, 0, 0, 0, 0, 0,
+		9, 0, 60,0, 0, 0, 0, 0,
+		1, 1, 1, 0, 0, 0, 60,0	
+	],
+	[
+		0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 60,0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0,
+	 140,0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 60,0, 0,
+		1, 1, 0, 0, 0, 0, 0, 0,
+		1, 1, 0, 60,0, 0, 0, 0,
+		1, 1, 0, 0, 0, 0, 0, 0
+	],
+	[
+		1, 1, 0, 0, 0, 0, 0, 0,
+		1, 1, 0, 0, 0, 0, 60,0,
+		1, 1, 0, 0, 0, 0, 0, 0,
+		1, 1, 8, 60,0, 0, 0, 0,
+		1, 1, 8, 60,0, 0, 0, 0,
+		1, 1, 0, 0, 0, 0, 0, 0,
+		1, 1, 0, 0, 0, 0, 0, 0,
+		1, 1, 0, 0, 0, 60,0, 0
+	],
+	[
+		9, 0, 0, 0, 0, 0, 8, 1,
+		9, 0,141,0, 0, 0, 8, 1,
+		9, 0,141,0, 0, 0, 8, 1,
+		9, 0,141,0, 60,0, 8, 1,
+		9, 0,141,0, 0, 0, 8, 1,
+		9, 0,141,0, 0, 0, 8, 1,
+		9, 0,141,0, 0, 0, 8, 1,
+		9, 0,141,0, 0, 0, 8, 1 
+	]
+]
+
+let i = 0
+
+while i < cLevelBlocks {
+	let selectedLevelBlock = $.random(LEVEL00)
+	// $.print(selectedLevelBlock)
+	let ox = 0
+	let oy = 0
+	let p = 0
+	while ox < 8 {
+		while oy < 8 {
+			if selectedLevelBlock[p] != 0 {
+				let offset = 0
+				let rotation = 0
+        // Block checks
+				if selectedLevelBlock[p] == 9 { 
+					offset = 14
+				}
+				if selectedLevelBlock[p] == 35 {
+					offset = 13
+				}
+				if selectedLevelBlock[p] == 140 {
+					offset = 13
+				}
+				if selectedLevelBlock[p] == 8 {
+					if selectedLevelBlock[p + 1] == 1 {
+						rotation = -180
+					}
+				}
+				$.add(obj{
+					OBJ_ID: selectedLevelBlock[p],
+					X: x,
+					Y: y - offset,
+					ROTATION: rotation
+				})
+			}
+			// $.print("p: ", p, " | oy: ", oy, " | ox: ", ox, " | x: ", x, " | y: ", y, " | block_id: ", selectedLevelBlock[p])
+			oy += 1
+			y += 30	
+			p += 1
+		}
+		ox += 1
+		x += 30
+		y = 15
+		oy = 0
+	}
+	i += 1
+	$.add(obj{
+		OBJ_ID: 90,
+		X: x - 30,
+		Y: 435
+	})
+  // For Stereo Madness song
+	if i == 8 {
+		$.add(color_trigger(BG,77,203,0,0.5).with(X, x - 30).with(Y, 465))
+		$.add(color_trigger(GROUND,77,203,0,0.5).with(X, x - 30).with(Y, 525))
+	}
+	if i == 15 {
+		$.add(color_trigger(BG,252,0,138,0.5).with(X, x - 30).with(Y, 465))
+		$.add(color_trigger(GROUND,252,0,138,0.5).with(X, x - 30).with(Y, 525))
+	}
+	if i == 31 {
+		$.add(color_trigger(BG,0,0,0,0.5).with(X, x - 30).with(Y, 465))
+		$.add(color_trigger(GROUND,0,0,0,0.5).with(X, x - 30).with(Y, 525))
+	}
+	if i == 33 {
+		$.add(color_trigger(BG,239,205,0,0.5).with(X, x - 30).with(Y, 465))
+		$.add(color_trigger(GROUND,239,205,0,0.5).with(X, x - 30).with(Y, 525))
+	}
+	if i == 64 {
+		$.add(color_trigger(BG,228,0,0,0.5).with(X, x - 30).with(Y, 465))
+		$.add(color_trigger(GROUND,228,0,0,0.5).with(X, x - 30).with(Y, 525))
+	}
+	if i == 95 {
+		$.add(color_trigger(BG,0,168,255,0.5).with(X, x - 30).with(Y, 465))
+		$.add(color_trigger(GROUND,0,168,255,0.5).with(X, x - 30).with(Y, 465))
+	}
+	$.print("Level part ", i, " complete.")
+}
